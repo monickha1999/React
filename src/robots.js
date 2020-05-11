@@ -1,45 +1,46 @@
 export const robots = [
 {
 	id: 1,
-	name: 'ffdsds',
-	username: 'sdfj',
-	email: 'jnf@gmail.com'
+	name: 'Nikitaa',
+	username: 'niki',
+	email: 'niki@gmail.com'
 },
 {
 	id: 2,
-	name: 'effg',
-	username:'dbfkj',
-	email:'jbwaej@ns df'
+	name: 'Monickha',
+	username:'moni',
+	email:'monickhausha@gmail.com'
 
 },
 {
 	id: 3,
-	name: 'faesf',
-	username: 'shdfa',
-	email: 'jsdbhafj@gmail.com'
+	name: 'Usha',
+	username: 'ush',
+	email: 'usharajan@gmail.com'
 
 },
 {
 	id: 4,
-	name: 'faesf',
-	username: 'shdfa',
-	email: 'jsdbhafj@gmail.com'
+	name: 'Rajan',
+	username: 'raj',
+	email: 'rajanusha@gmail.com'
 	},
 	{
 	id: 5,
-	name: 'faesf',
-	username: 'shdfa',
-	email: 'jsdbhafj@gmail.com'
+	name: 'Niranjan',
+	username: 'niran',
+	email: 'niransmart@gmail.com'
 	},
 	{
 	id: 6,
-	name: 'faesf',
-	username: 'shdfa',
-	email: 'jsdbhafj@gmail.com'
+	name: 'Vishnu',
+	username: 'vish',
+	email: 'talentedvishnu@gmail.com'
 	},
 	{
 	id: 7,
-	name: 'faesf',
-	username: 'shdfa',
-	email: 'jsdbhafj@gmail.com'
-	},]
+	name: 'Bharath',
+	username: 'bhara',
+	email: 'techbharath@gmail.com'
+	 }
+	]
