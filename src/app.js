@@ -1,52 +1,84 @@
 import React, {Component} from 'react';
-import './hi.css';
+import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
+import Navigation from './components/Navigation/Navigation.js';
+import Logo from './components/Logo/Logo.js';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
+import Rank from './components/Rank/Rank.js';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition.js';
+import './App.css';
 
-import SearchBox from './SearchBox.js';
-import CardList from './CardList.js';
-import {robots} from './robots.js';
-import Scroll from './Scroll';
-
-class app extends Component {
+const app = new Clarifai.App({
+ apiKey: 'ab077eab511549c49b5b4b26d1260bc2'
+});
+const particlesOptions = {
+	particles:{
+		number: {
+			value: 50,
+			density:{
+				enable: true,
+				value_area: 800
+			}
+		}
+	}
+}
+class App extends Component{
 	constructor(){
-		super()
-		this.state = {
-			robots: [],
-			searchfield: ''
+		super();
+		this.state={
+			input:'',
+			imageUrl:'',
+			box:{},
+		}
+	}
+	calculateFaceLocation = (data) =>{
+		const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+		const image = document.getElementById('inputImage');
+		const width = Number(image.width);
+		const height = Number(image.height);
+		return{
+			leftCol: clarifaiFace.left_col * width,
+			topRow: clarifaiFace.top_row * height,
+			rightCol: width - (clarifaiFace.right_col * width),
+			bottomRow: height - (clarifaiFace.bottom_row * height),
+		}
 
-		}
-		console.log('1');
 	}
-		componentDidMount(){
-			fetch('https://jsonplaceholder.typicode.com/users')
-			.then(response=> response.json())
-		
-			.then(users=>this.setState({robots: users}));
-		
-		}
-		
-	
-	OnSearchChange =  (event) => {
-		this.setState({searchfield: event.target.value})
-	
+	displayFaceBox = (box) => {
+		console.log(box);
+		this.setState({box: box});
 	}
+	onInputChange =(event) => {
+		this.setState({input: event.target.value});
+	}
+	onButtonSubmit =()=>{
+		this.setState({imageUrl: this.state.input});
+		app.models
+		.predict(
+		Clarifai.FACE_DETECT_MODEL, 
+		this.state.input)
+		.then(response=>this.displayFaceBox(this.calculateFaceLocation(response)))
+  		 .catch(err => console.log(err));
+  
+	}	
 	render(){
-		const filteredRobots =this.state.robots.filter(robots =>{
-			return robots.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
-				})
+		return(
+			<div className= "App">
+			<Particles  className='particles'
+              params={particlesOptions}
+            		
+            />
+			<Navigation/>
+			<Logo />
+			<Rank/>			
+			<ImageLinkForm onInputChange={this.onInputChange}
+			 onButtonSubmit={this.onButtonSubmit} 
+			 />
+			<FaceRecognition box={this.state.box} imageUrl={this.state.imageUrl}
+			/>
 
-   if(this.state.robots.length === 0){
-   	return <h1> Loading </h1>  }
-   	else{
-	return(
-		<div className="tc bg-light-blue bg-animate hover-bg-pink gradient-name=dark-blue">
-		<h1 className='f1'>RobotFriends</h1>
-		<SearchBox searchChange={this.OnSearchChange}/>
-		<Scroll>
-		<CardList robots={filteredRobots} />
-	</Scroll>
-		</div>
-		);
+			</div>
+			);
 	}
 }
-}
-export default app;
+export default App;
